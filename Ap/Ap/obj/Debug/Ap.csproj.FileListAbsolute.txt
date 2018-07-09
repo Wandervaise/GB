@@ -1,0 +1,6 @@
+c:\users\sun\documents\visual studio 2015\Projects\Ap\Ap\bin\Debug\Ap.exe.config
+c:\users\sun\documents\visual studio 2015\Projects\Ap\Ap\obj\Debug\Ap.csprojResolveAssemblyReference.cache
+c:\users\sun\documents\visual studio 2015\Projects\Ap\Ap\bin\Debug\Ap.exe
+c:\users\sun\documents\visual studio 2015\Projects\Ap\Ap\bin\Debug\Ap.pdb
+c:\users\sun\documents\visual studio 2015\Projects\Ap\Ap\obj\Debug\Ap.exe
+c:\users\sun\documents\visual studio 2015\Projects\Ap\Ap\obj\Debug\Ap.pdb
