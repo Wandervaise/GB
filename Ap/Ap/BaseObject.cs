@@ -15,14 +15,8 @@ namespace Ap
         }
         public virtual void Draw()
         {
-           /* Game.Buffer.Graphics.DrawEllipse(
-                Pens.Gray, 
-                Pos.X, Pos.Y,
-                Size.Width, Size.Height);*/
-
             Image newImage = Image.FromFile("Asteroid.png");
             Rectangle rect = new Rectangle(Pos.X, Pos.Y, Size.Width, Size.Height);
-            //Point asteroid_point = new Point(Pos.X, Pos.Y,Size.Width,Size.Height);
             Game.Buffer.Graphics.DrawImage(newImage, rect);
             
         }

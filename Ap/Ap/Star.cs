@@ -5,7 +5,6 @@ namespace Ap
 {
     class Star:BaseObject
     {
-        //public static Star[] _objs;
         public Star(Point pos,Point dir,Size size):base(pos,dir,size)
         {
             
@@ -24,9 +23,7 @@ namespace Ap
         public override void Update()
         {
             Pos.X = Pos.X + Dir.X;
-            //if (Pos.X < 0) Pos.X = Game.Width + Size.Width;
-            if (Pos.X < 0) Pos.X = Game.Width-47;// + Size.Width; *1 то же самое что о в базовом методе класса 
+            if (Pos.X < 0) Pos.X = Game.Width-47;
         }
- 
     }
 }

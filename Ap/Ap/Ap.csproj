@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseObject.cs" />
+    <Compile Include="dust.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Planet.cs" />
     <Compile Include="Program.cs" />
