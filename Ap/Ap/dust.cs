@@ -2,6 +2,9 @@
 
 namespace Ap
 {
+    /// <summary>
+    /// объект экрана меню
+    /// </summary>
     class dust
     {
         protected Point Pos;

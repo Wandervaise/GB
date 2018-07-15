@@ -45,9 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Asteroid.cs" />
     <Compile Include="BaseObject.cs" />
+    <Compile Include="Bullet.cs" />
+    <Compile Include="comet.cs" />
     <Compile Include="dust.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="GameObjectException.cs" />
+    <Compile Include="ICollision.cs" />
     <Compile Include="Planet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,11 +3,13 @@ using System.Drawing;
 
 namespace Ap
 {
+    /// <summary>
+    /// производный объект - звезда
+    /// </summary>
     class Star:BaseObject
     {
         public Star(Point pos,Point dir,Size size):base(pos,dir,size)
         {
-            
         }
         public override void Draw()
         {
