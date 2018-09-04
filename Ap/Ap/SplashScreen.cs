@@ -60,15 +60,16 @@ namespace Ap
             form.Controls.Add(button_exit);
 
             Label name = new Label();
-            name.Text = "Имя автора";
-            name.Location = new Point(Width/2-40,Height-100);
+            name.Text = "Управление:\n Движение ↑ ↓ → ← \n Выстрел Ctrl";
+            name.Location = new Point(Width/2-50,Height-100);
+            name.Size = new Size(120,40);
             form.Controls.Add(name);
             #endregion
         }
 
         //Rectangle button = new Rectangle(Width / 2 - 40, Height / 2 - 100, 100, 40);
 
-        /*    остановился тут
+        /*    
        public void MyButton()
        {
            Button b1 = new Button();
@@ -105,7 +106,6 @@ namespace Ap
             var newGame = new Game();
             newGame.Init(form);
             form.Show();
-            
         }
         /// <summary>
         /// рекорды
@@ -157,10 +157,16 @@ namespace Ap
             _objs = new dust[30];
             for (int i = 0; i < _objs.Length; i++)
             {
+                Random rnd = new Random();
+                int dust_size = rnd.Next(5,10);
+                int rpos_x = rnd.Next(0,Width);
+                int rpos_y = rnd.Next(0,Height);
                 _objs[i] = new dust(
-                     new Point(Width - 10, Height - 20),
+                     //new Point(Width - 10, Height - 20),
+                     new Point(rpos_x,rpos_y),
                      new Point(10 - i, 15 - i),
-                     new Size(10, 10));
+                     //new Size(10, 10));
+                     new Size(dust_size,dust_size));
             }
 
 

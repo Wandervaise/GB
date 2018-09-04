@@ -16,6 +16,9 @@ namespace Ap
             Dir = dir;
             Size = size;
         }
+        /// <summary>
+        /// функция отрисовки графики
+        /// </summary>
         public void Draw()
         {
             SplashScreen.Buffer.Graphics.DrawEllipse(
@@ -23,6 +26,9 @@ namespace Ap
                 Pos.X, Pos.Y,
                 Size.Width, Size.Height);
         }
+        /// <summary>
+        /// функция обновления состояния объекта
+        /// </summary>
         public void Update()
         {
             Pos.X = Pos.X + Dir.X;

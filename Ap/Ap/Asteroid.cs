@@ -14,11 +14,16 @@ namespace Ap
         {
             //newImage = Image.FromFile("Asteroid.png");
         }
-
+        /// <summary>
+        /// функция отрисовки графики
+        /// </summary>
         public override void Draw()
         {
             Game.Buffer.Graphics.DrawImage(newImage, Pos.X, Pos.Y, Size.Width, Size.Height);
         }
+        /// <summary>
+        /// функция обновления состояния объекта
+        /// </summary>
         public override void Update()
         {
             Pos.X = Pos.X + Dir.X;

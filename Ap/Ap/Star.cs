@@ -11,6 +11,9 @@ namespace Ap
         public Star(Point pos,Point dir,Size size):base(pos,dir,size)
         {
         }
+        /// <summary>
+        /// отрисовка объекта
+        /// </summary>
         public override void Draw()
         {
             Game.Buffer.Graphics.DrawLine(
@@ -22,10 +25,13 @@ namespace Ap
                 Pos.X + Size.Width, Pos.Y, 
                 Pos.X, Pos.Y + Size.Height);
         }
+        /// <summary>
+        /// обновление состояния объекта
+        /// </summary>
         public override void Update()
         {
             Pos.X = Pos.X + Dir.X;
-            if (Pos.X < 0) Pos.X = Game.Width-47;
+            if (Pos.X < 0) Pos.X = Game.Width;
         }
     }
 }

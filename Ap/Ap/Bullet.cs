@@ -13,16 +13,22 @@ namespace Ap
 
         public Rectangle rect => new Rectangle(Pos, Size);
 
+        /// <summary>
+        /// функция отрисовки графики
+        /// </summary>
         public override void Draw()
         {
             Game.Buffer.Graphics.DrawRectangle(Pens.OrangeRed,Pos.X,Pos.Y,Size.Width,Size.Height);
         }
 
         public bool Collision(ICollision obj) => obj.rect.IntersectsWith(this.rect);
-
+        int BULLET_MOVEMENT = 32;
+        /// <summary>
+        /// функция обновления состояния объекта
+        /// </summary>
         public override void Update()
         {
-            Pos.X = Pos.X + 3;
+            Pos.X += BULLET_MOVEMENT;
         }
     }
 }

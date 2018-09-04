@@ -16,6 +16,7 @@ namespace Ap
         public Game()
         {
         }
+        private static Timer timer = new Timer();
         /// <summary>
         /// Класс инициализации методов
         /// </summary>
@@ -34,7 +35,8 @@ namespace Ap
             Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
             Load();
             int timerInterval = 100;
-            Timer timer = new Timer { Interval = timerInterval };
+            timer.Interval = timerInterval;
+            //тут Timer timer = new Timer { Interval = timerInterval };
             try
             {
                 if (timerInterval!=100)
@@ -46,7 +48,32 @@ namespace Ap
             }
             timer.Start();
             timer.Tick += Timer_Tick;
+            form.KeyDown += Form_KeyDown;
+            Ship.MessageCrash += Finish;
+             _ship= new Ship(
+            new Point(10, 400),
+            new Point(5, 5),
+            new Size(10, 10));
         }
+        public static LogData logdata = new LogData();
+
+        /// <summary>
+        /// Окончание игры
+        /// </summary>
+        public static void Finish()
+        {
+            timer.Stop();
+            Buffer.Graphics.DrawString(END_GAME, 
+                new Font(FontFamily.GenericSansSerif, 60, 
+                FontStyle.Underline), 
+                Brushes.White, 200, 100);
+            Buffer.Render();
+           
+            Log llll = new Log(logdata.LogConsoleWrite);// Создание экземпляра делегата
+            llll(END_GAME); // Вызов функции
+            
+        }
+
         /// <summary>
         /// Вывод графики
         /// </summary>
@@ -63,8 +90,16 @@ namespace Ap
             {
                 cmt.Draw();
             }
-            _bullet.Draw();
-            
+            _bullet?.Draw();
+            _ship?.Draw();
+            _repairKit?.Draw();
+
+            if (_ship!=null)
+            {
+                Buffer.Graphics.DrawString("Energy:" + _ship.Energy, SystemFonts.DefaultFont, Brushes.White, 0, 0);
+                Buffer.Graphics.DrawString("Score points:" + score.Points, SystemFonts.DefaultFont, Brushes.White, 0, 10);
+            }
+
             try
             {
                 Buffer.Render();
@@ -74,58 +109,137 @@ namespace Ap
                 Application.Exit();
             }
         }
-
+        #region объявление констант и объектов
         public static comet[] _comet;
         public static Planet pl_obj;
-        //public static Asteroid[] _asteroid;
         public static Star[] _star;
         public static Bullet _bullet;
+        public static Ship _ship;
+        public static RepairKit _repairKit;
+        public static Score score = new Score();
+
+        public static int ASTEROID_NUM_MIN = 10;
+        public static int ASTEROID_NUM_MAX = 35;
+
+        public static int PLANET_POS_X = Width - 60;
+        public static int PLANET_POS_Y = 100;
+        public static int PLANET_DIR_X = -1;   
+        public static int PLANET_DIR_Y = 5;
+        public static int PLANET_SIZE = 150;
+
+        public static int STAR_POS_X = 1000;
+        public static int STAR_SIZE = 3;
+        public static int STAR_NUM = 30;
+
+        public static int COMET_POS_X = Width - 10;
+        public static int COMET_POS_Y = Height - 20;
+        public static int COMET_DIR_X = 15;
+        public static int COMET_DIR_Y = 10;
+        public static int COMET_SIZE = 30;
+
+        public static int RANDOM_DIR_MIN = 5;
+        public static int RANDOM_DIR_MAX = 50;
+
+        public static int BULLET_POS_X = 0;
+        public static int BULLET_POS_Y = 200;
+        public static int BULLET_DIR_X = 5;
+        public static int BULLET_DIR_Y = 0;
+        public static int BULLET_SIZE_X = 40;
+        public static int BULLET_SIZE_Y = 20;
+
+        public static int RK_POS_X = 300;
+        public static int RK_POS_Y = 400;
+        public static int RK_DIR_X = 5;
+        public static int RK_DIR_Y = 0;
+        public static int RK_SIZE_X = 15;
+        public static int RK_SIZE_Y = 15;
+        public static int RK_SHIELD_POINT = 30;
+
+        public static int POINT_FOR_COMET = 10;
+        public static int POINT_FOR_RK = 5;
+
+        public static string END_GAME = "Game over";
+        #endregion
+
         /// <summary>
         /// класс для инициализации объектов
         /// </summary>
         public static void Load()
         {
             var rnd = new Random();
-            int asteroidNum = rnd.Next(30,35);
+            int asteroidNum = rnd.Next(ASTEROID_NUM_MIN, ASTEROID_NUM_MAX);
 
             for (int i = 0; i < Width; i++)
             {
                 pl_obj = new Planet(
-                    new Point(Width - 60, 100),
-                    new Point(-1, 5),
-                    new Size(150, 147));
+                    new Point(PLANET_POS_X, PLANET_POS_Y),
+                    new Point(PLANET_DIR_X, PLANET_DIR_Y),
+                    new Size(PLANET_SIZE, PLANET_SIZE));
             }
-            _star = new Star[30];
-            //_asteroid = new Asteroid[15];
-
+            _star = new Star[STAR_NUM];
             for (var i = 0; i < _star.Length; i++)
             {
-                int r = rnd.Next(5, 50);
-                _star[i] = new Star(new Point(1000, rnd.Next(0, Game.Height)), new
-                Point(-r, r), new Size(3, 3));
+                int r = rnd.Next(RANDOM_DIR_MIN, RANDOM_DIR_MAX);
+                _star[i] = new Star(
+                    new Point(STAR_POS_X, rnd.Next(0, Game.Height)),
+                    new Point(-r, r), 
+                    new Size(STAR_SIZE, STAR_SIZE));
             }
-            //for (var i = 0; i < _asteroid.Length; i++)
-            //{
-            //    int r = rnd.Next(5, 50);
-            //    _asteroid[i] = new Asteroid(new Point(1000, rnd.Next(0, Game.Height)),
-            //    new Point(-r / 5, r), new Size(r, r));
-            //}
-
-            _bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(40, 10));
+           
             _comet = new comet[asteroidNum];
+            _repairKit = new RepairKit(
+                new Point(RK_POS_X, RK_POS_Y),
+                new Point(RK_DIR_X, RK_DIR_Y),
+                new Size(RK_SIZE_X, RK_SIZE_Y)
+                );
             for (int i = 0; i < _comet.Length; i++)
             {
+                
                 _comet[i] = new comet(
-                     new Point(Width - 10, Height - 20),
-                     new Point(10 - i, 15 - i),
-                     new Size(30, 30));
+                     new Point(rnd.Next(0,Width), rnd.Next(0,Height)),
+                     new Point(COMET_DIR_X-i, COMET_DIR_Y+i),
+                     new Size(COMET_SIZE, COMET_SIZE));
             }
         }
+
+        /// <summary>
+        /// Метод отвечающий за нажатие клавиш 
+        /// </summary>
+        /// <param name="sender">объект к которому относится нажатие клавиш?</param>
+        /// <param name="e">событие нажатия клавиш</param>
+        private static void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode==Keys.ControlKey)
+            {
+                
+                _bullet = new Bullet(
+                    new Point(
+                        _ship.rect.X + 10,
+                        _ship.rect.Y + 4),
+                    new Point(4, 0), new Size(50, 100));
+            }
+            if (e.KeyCode == Keys.Up) _ship.Up();
+            if (e.KeyCode == Keys.Down) _ship.Down();
+            if (e.KeyCode == Keys.Right) _ship.Right();
+            if (e.KeyCode == Keys.Left) _ship.Left();
+        }
+
         /// <summary>
         /// класс для изменения состояния объектов 
         /// </summary>
         public static void Update()
         {
+            //ADD_Point<int> add_score_point = new ADD_Point<int>(score.Add_points);
+            ADD_Point<int> add_score_point = score.Add_points;
+            // данные которые получаем и метод занимающийся обработкой
+            /*
+            очки передаем методу add_points (занимающийся подсчетом очков) <- вот этим должен занмиаться метод, котоырй мы напишем сейчас 
+            */
+            
+
+
+            var rnd = new Random();
+
             foreach (Star obj in _star)
             { obj.Update(); }
             //foreach(Asteroid strd in _asteroid)
@@ -133,18 +247,48 @@ namespace Ap
             //    strd.Update();
             //}
                 pl_obj.Update();
-            foreach(comet cmt in _comet)
+            _repairKit?.Update();
+            foreach (comet cmt in _comet)
             {
                 cmt.Update();
-                if (cmt.Collision(_bullet))
+               
+                if (_bullet!=null)
                 {
-                    System.Media.SystemSounds.Hand.Play();
+                    if (cmt.Collision(_bullet))
+                    {
+                        System.Media.SystemSounds.Hand.Play();
+                        score.Add_points(POINT_FOR_COMET);
+                        cmt.resp();
+                    }
+                }
+                if (cmt.Collision(_ship))
+                {
+                    _ship?.EnergyLow(rnd.Next(1, 10));
+                    System.Media.SystemSounds.Asterisk.Play();
                     cmt.resp();
                 }
+                
             }
-            _bullet.Update();
+            _bullet?.Update();
 
+
+            if (_repairKit.Collision(_ship))
+            {
+                _repairKit.resp();                
+                _ship?.EnergyUp(RK_SHIELD_POINT);
+                add_score_point(POINT_FOR_RK);
+            }
+            //if (_ship.Energy < 50)
+            //{
+                //_repairKit.resp();
+                if (_ship.Energy <= 0) _ship?.Crash();
+            //}
+            
+            //LogData logdata = new LogData();
+            //Log log = new Log(logdata.LogConsoleWrite);
+            //Log log = logdata.LogConsoleWrite;
         }
+
         /// <summary>
         /// таймер обрабатывающий события
         /// </summary>
@@ -155,6 +299,5 @@ namespace Ap
             Draw();
             Update();
         }
-
     }
 }
